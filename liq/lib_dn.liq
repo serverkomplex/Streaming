@@ -224,23 +224,23 @@ def dreamnetwork_master_input(channel) =
 	s = input.http(
 		id="in_master_#{channel}",
 		user_agent="DreamNetwork/0.1.2 (Liquidsoap)",
-		timeout=10.,
-		poll_delay=2.,
-		max=15.,
-		buffer=5.,
+		timeout=100.,
+		poll_delay=3.,
+		max=12.,
+		buffer=2.,
 		"http://#{dreamnetwork_internal_host}:#{dreamnetwork_internal_port}/#{channel}/master_signal"
 	)
-	#s = mksafe(s)
-	s = fallback(
-		track_sensitive=false,
-		[
-			s,
-			rewrite_metadata([
-				("source","offline"),
-				("artist", ""),
-				("title", "Stream offline")
-			], blank())
-		])
+	s = mksafe(s)
+	# s = fallback(
+	# 	track_sensitive=false,
+	# 	[
+	# 		s,
+	# 		rewrite_metadata([
+	# 			("source","offline"),
+	# 			("artist", ""),
+	# 			("title", "Stream offline")
+	# 		], blank())
+	# 	])
 	s = rewrite_metadata([("source","in_master"),("channel",channel)], s)
 	s
 end
